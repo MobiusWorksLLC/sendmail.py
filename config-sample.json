@@ -35,5 +35,13 @@
     "icon_name": "mail-message-new",
     "title_template": "{appname} {name}",
     "text_template": "{subject}"
+  },
+  {
+    "name": "Yagmail OAuth",
+    "class": "YagmailProcessor",
+    "enabled": true,
+    "to_address": "TO_ADDRESS",
+    "user": "GMAIL_USERNAME",
+    "oauth2_file": "~/.yag_oauth"
   }
 ]
