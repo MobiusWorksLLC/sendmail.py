@@ -38,10 +38,17 @@ args = parser.parse_args()
 if args.config:
     filename = args.config
 else:
-    if os.path.isfile(os.getcwd() + '/sendmail.json'):
-        filename = os.getcwd() + '/sendmail.json'
-    else:
-        filename = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
+    config_locations = [
+        os.getcwd() + '/sendmail.json',
+        os.path.dirname(os.path.realpath(__file__)) + "/config.json",
+        os.path.expanduser("~/.config/sendmail.py/sendmail.json"),
+        "/etc/sendmail.py/sendmail.json",
+        ]
+
+    for loc in config_locations:
+        if os.path.isfile(loc):
+            filename = loc
+            break
 
 if not os.path.isfile(filename):
     sys.stderr.write("ERROR! Config file not found: {}\n".format(filename))
