@@ -16,6 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 
 
+import logging
 import os
 from email.message import Message
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -75,13 +76,13 @@ class FilesystemProcessor(AbstractProcessor):
         :param message: Message to save.
         """
 
-        print("  - {}: {}.process()".format(self.name, self.__class__.__name__))
+        logging.info("  - {}: {}.process()".format(self.name, self.__class__.__name__))
         self.init_filesystem()
         filename = "{}/{}{}".format(self.directory, str(self.number).zfill(self.name_length), self.extension)
-        print("  - {}: from: {}".format(self.name, message.get("From")))
-        print("  - {}: subject: {}".format(self.name, message.get("Subject")))
-        print("  - {}: content type: {}".format(self.name, message.get_content_type()))
-        print("  - {}: filename: {}".format(self.name, filename))
+        logging.info("  - {}: from: {}".format(self.name, message.get("From")))
+        logging.info("  - {}: subject: {}".format(self.name, message.get("Subject")))
+        logging.info("  - {}: content type: {}".format(self.name, message.get_content_type()))
+        logging.info("  - {}: filename: {}".format(self.name, filename))
         f = open(filename, "w")
         f.write(message.as_string())
         f.close()

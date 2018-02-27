@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 import os
 import sys
 import json
+import logging
 import signal
 import notify2
 import argparse
@@ -73,7 +74,7 @@ class FilesystemWatcher:
             self.load_config(filename)
 
         if args.dir:
-            print("Add: {}({})".format('--dir', args.dir))
+            logging.info("Add: {}({})".format('--dir', args.dir))
             self.directories.append(args.dir)
 
         if len(self.directories) == 0:
@@ -98,13 +99,13 @@ class FilesystemWatcher:
         :param filename: Name of the configuration file.
         """
 
-        print('Load config "{}"...'.format(filename))
+        logging.info('Load config "{}"...'.format(filename))
         f = open(filename, encoding="UTF-8")
         config = json.loads(f.read())
         f.close()
         for conf in config:
             if conf['class'] == 'FilesystemProcessor' and conf['enabled']:
-                print("Add: {}({})".format(conf['name'], conf['directory']))
+                logging.info("Add: {}({})".format(conf['name'], conf['directory']))
                 self.directories.append(conf['directory'])
 
     def build_menu(self):
@@ -127,7 +128,7 @@ class FilesystemWatcher:
         :param source: Clicked menu item.
         """
 
-        print('Open dir: {}'.format(source.get_label()))
+        logging.info('Open dir: {}'.format(source.get_label()))
         subprocess.call(['exo-open', '--launch', 'FileManager', source.get_label()])
 
     def application_quit(self, source: MenuItem):
@@ -168,7 +169,7 @@ class FilesystemEventHandler(pyinotify.ProcessEvent):
 
         if not os.path.isfile(event.pathname):
             return
-        print('New message: ', event.pathname)
+        logging.info('New message: ', event.pathname)
 
         f = open(event.pathname, encoding='UTF-8')
         data = f.read()

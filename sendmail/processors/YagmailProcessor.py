@@ -17,6 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 
 import inspect
+import logging
 import yagmail
 from email.message import Message
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -58,7 +59,7 @@ class YagmailProcessor(AbstractProcessor):
         :param message: Message to send.
         """
 
-        print("  - {}: {}.process()".format(self.name, self.__class__.__name__))
+        logging.info("  - {}: {}.process()".format(self.name, self.__class__.__name__))
 
         with yagmail.SMTP(**self.conf) as yag:
             yag.send(

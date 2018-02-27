@@ -16,6 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 
 
+import logging
 import notify2
 from email.message import Message
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -51,7 +52,7 @@ class NotifyProcessor(AbstractProcessor):
         :param message: E-Mail message object.
         """
 
-        print("  - {}: {}.process()".format(self.name, self.__class__.__name__))
+        logging.info("  - {}: {}.process()".format(self.name, self.__class__.__name__))
 
         notify2.init("Sendmail")
 

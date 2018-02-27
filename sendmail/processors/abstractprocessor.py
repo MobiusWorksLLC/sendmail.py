@@ -16,6 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 
 import abc
+import logging
 from email.message import Message
 
 
@@ -51,7 +52,7 @@ class AbstractProcessor():
                     try:
                         setattr(self, name, conf[name])
                         if name not in ["password", "apikey"]:
-                            print("    {}.{} = '{}' ('{}')".format(self.__class__.__name__, name, conf[name], value))
+                            logging.info("    {}.{} = '{}' ('{}')".format(self.__class__.__name__, name, conf[name], value))
                     except KeyError:
                         pass
 

@@ -15,6 +15,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+import logging
 import os
 import re
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -43,7 +44,7 @@ class MailProcessorFactory:
 
         directory = os.path.dirname(os.path.realpath(__file__)) + "/processors"
         regex = re.compile("(.+Processor)\.py")
-        print("Processors Directory: " + directory)
+        logging.info("Processors Directory: " + directory)
         for conf in config:
             name = conf["name"]
             clazz = conf["class"]
@@ -57,11 +58,11 @@ class MailProcessorFactory:
                 pass
             if not moduleExists:
                 pack = self.package + clazz
-                print("> {} -- from {} import {}".format(clazz, pack, clazz))
+                logging.info("> {} -- from {} import {}".format(clazz, pack, clazz))
                 mod = __import__(pack, fromlist=[clazz])
                 o = getattr(mod, clazz)
                 self.mods[clazz] = o
-            print("Add: {}({})".format(name, clazz))
+            logging.info("Add: {}({})".format(name, clazz))
             self.list[name] = self.mods[clazz](conf)
 
     def get(self, name: str) -> AbstractProcessor:

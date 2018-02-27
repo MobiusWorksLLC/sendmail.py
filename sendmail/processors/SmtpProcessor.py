@@ -16,6 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 
 
+import logging
 import smtplib
 from email.message import Message
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -55,22 +56,22 @@ class SmtpProcessor(AbstractProcessor):
         :param message: Message to send.
         """
 
-        print("  - {}: {}.process()".format(self.name, self.__class__.__name__))
+        logging.info("  - {}: {}.process()".format(self.name, self.__class__.__name__))
 
         if not self.from_address:
             self.from_address = self.username
 
-        print("  - {}: from: {}".format(self.name, message.get("From")))
-        print("  - {}: subject: {}".format(self.name, message.get("Subject")))
-        print("  - {}: content type: {}".format(self.name, message.get_content_type()))
+        logging.info("  - {}: from: {}".format(self.name, message.get("From")))
+        logging.info("  - {}: subject: {}".format(self.name, message.get("Subject")))
+        logging.info("  - {}: content type: {}".format(self.name, message.get_content_type()))
 
         with smtplib.SMTP(self.host, self.port) as server:
-            print('  - Enable secure connection...')
+            logging.info('  - Enable secure connection...')
             if self.starttls:
                 server.starttls()
-            print('  - Log in as "' + self.username + '"...')
+            logging.info('  - Log in as "' + self.username + '"...')
             server.login(self.username, self.password)
-            print('  - Start sending E-Mail message...')
+            logging.info('  - Start sending E-Mail message...')
             server.sendmail(from_addr=self.username, to_addrs=self.to_address, msg=message.as_string())
-            print('  - Quit server...')
+            logging.info('  - Quit server...')
             server.quit()

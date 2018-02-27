@@ -15,6 +15,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+import logging
 from email import message_from_string
 from sendmail.factory import MailProcessorFactory
 
@@ -61,8 +62,8 @@ class Sendmail:
         for name in self.factory.list:
             p = self.factory.get(name)
             if p is None:
-                print("Processor not found: {}".format(name))
+                logging.error("Processor not found: {}".format(name))
                 continue
 
-            print("Execute: {} ({})".format(name, p.__class__.__name__))
+            logging.info("Execute: {} ({})".format(name, p.__class__.__name__))
             p.process(message)

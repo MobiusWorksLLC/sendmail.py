@@ -15,6 +15,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
+import logging
 from mandrill.mandrill import Mandrill, Error
 from email.message import Message
 from sendmail.processors.abstractprocessor import AbstractProcessor
@@ -51,10 +52,10 @@ class MandrillProcessor(AbstractProcessor):
         :param message: Message to send.
         """
 
-        print("  - {}: {}.process()".format(self.name, self.__class__.__name__))
+        logging.info("  - {}: {}.process()".format(self.name, self.__class__.__name__))
 
         if not self.apikey:
-            print("  - {}: {}.process(): Mandrill API key not specified.".format(self.name, self.__class__.__name__))
+            logging.info("  - {}: {}.process(): Mandrill API key not specified.".format(self.name, self.__class__.__name__))
             return
 
         client = Mandrill(self.apikey)
@@ -78,14 +79,14 @@ class MandrillProcessor(AbstractProcessor):
             i = 0
             for item in result:
                 i += 1
-                print("  - {}: {}.process(): {}. {} -- {}".format(
+                logging.info("  - {}: {}.process(): {}. {} -- {}".format(
                     self.name,
                     self.__class__.__name__,
                     str(i),
                     item["email"],
                     item["status"]))
         except Error as e:
-            print("  - {}: {}.process(): ERROR: {} - {}".format(
+            logging.info("  - {}: {}.process(): ERROR: {} - {}".format(
                 self.name,
                 self.__class__.__name__,
                 e.__class__,
